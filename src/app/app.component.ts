@@ -6,6 +6,7 @@ import { AuthService } from './auth.service'; // Import AuthService
 import { Router } from '@angular/router'; //Import Router
 import { Observable } from 'rxjs';
 import { User } from 'firebase/auth';
+import { TestComponent } from "./test/test.component";
 
 interface TestDataItem {
   message: string;
@@ -19,11 +20,12 @@ interface TestDataItem {
     <button (click)="logout()" *ngIf="(user$ | async)">Logout</button>
     <router-outlet></router-outlet>
     <button (click)="addTestData()">Add Test Data</button>
+    <app-test></app-test>
     <ul>
       <li *ngFor="let item of testData">{{ item.message }}</li>
     </ul>
   `,
-  imports: [RouterOutlet, RouterLink, CommonModule], // Add CommonModule to imports
+  imports: [RouterOutlet, RouterLink, CommonModule, TestComponent], // Add CommonModule to imports
 })
 export class AppComponent implements OnInit {
   title = 'my-kanban-app';

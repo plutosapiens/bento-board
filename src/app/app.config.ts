@@ -9,6 +9,7 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { environment } from './environments/environment';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
+import { AppComponent } from './app.component';
 
 
 export const appConfig: ApplicationConfig = {
@@ -16,7 +17,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter([
       { path: 'login', component: LoginComponent },
       { path: 'signup', component: SignupComponent },
-      { path: '', redirectTo: '/login', pathMatch: 'full' },
+      { path: '', component: AppComponent },
     ], withComponentInputBinding()), // Only withComponentInputBinding
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => getFirestore()),
