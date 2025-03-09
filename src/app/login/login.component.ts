@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common'; // Import CommonModule
+import { FirebaseError } from 'firebase/app';
 
 @Component({
   selector: 'app-login',
@@ -9,18 +12,22 @@ import { AuthService } from '../auth.service';
     <input type="email" placeholder="Email" #email />
     <input type="password" placeholder="Password" #password />
     <button (click)="login(email.value, password.value)">Login</button>
+    <p *ngIf="errorMessage">{{ errorMessage }}</p>
   `,
-  imports: [],
+  imports: [CommonModule], // Add CommonModule to imports
 })
 export class LoginComponent {
-  constructor(private authService: AuthService) {}
+  errorMessage: string | null = null;
+  constructor(private authService: AuthService, private router: Router) {}
 
   async login(email: string, password: string) {
+    this.errorMessage = null;
     try {
       await this.authService.login(email, password);
       // Redirect to your main app page after successful login
     } catch (error) {
-      // Handle login error (e.g., display error message)
-    }
+      if (error instanceof FirebaseError) {
+        this.errorMessage = error.message; //Display error message)
+      }    }
   }
 }

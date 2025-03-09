@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common'; // Import CommonModule
+import { FirebaseError } from 'firebase/app';
 
 @Component({
   selector: 'app-signup',
@@ -9,18 +12,22 @@ import { AuthService } from '../auth.service';
     <input type="email" placeholder="Email" #email />
     <input type="password" placeholder="Password" #password />
     <button (click)="signup(email.value, password.value)">Signup</button>
+    <p *ngIf="errorMessage">{{ errorMessage }}</p>
   `,
-  imports: [],
+  imports: [CommonModule], // Add CommonModule to imports
 })
 export class SignupComponent {
-  constructor(private authService: AuthService) {}
+  errorMessage: string | null = null;
+  constructor(private authService: AuthService, private router: Router) {}
 
   async signup(email: string, password: string) {
     try {
       await this.authService.signup(email, password);
       // Redirect to your main app page after successful signup
     } catch (error) {
-      // Handle signup error (e.g., display error message)
+      if (error instanceof FirebaseError) {
+        this.errorMessage = error.message; //Display error message)
+      }
     }
   }
 }
